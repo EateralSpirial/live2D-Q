@@ -1,0 +1,325 @@
+schema_version: "1.0"
+profile_name: "default-local"
+
+paths:
+  character_manifest: "config/character-assets.yaml"
+  animation_presets: "config/animation-presets.example.yaml"
+  generated_assets_dir: "assets/generated"
+  profiles_dir: "assets/profiles"
+  models_dir: "models"
+  cache_dir: ".cache"
+  logs_dir: "logs"
+
+server:
+  bind_host: "127.0.0.1"
+  http_port: 8765
+  websocket_path: "/ws"
+  control_route: "/control"
+  overlay_route: "/overlay"
+  health_route: "/api/health"
+  metrics_route: "/api/metrics"
+  cors_origins:
+    - "http://127.0.0.1:8765"
+    - "http://localhost:8765"
+  allow_remote_connections: false
+  auth:
+    enabled: false
+    token_env_var: "LIVE2DQ_AUTH_TOKEN"
+
+runtime:
+  locale: "zh-CN"
+  telemetry: false
+  offline_mode_after_models_ready: true
+  save_window_layout: true
+  restore_last_profile: true
+  graceful_shutdown_timeout_ms: 5000
+  watchdog:
+    enabled: true
+    heartbeat_interval_ms: 1000
+    component_timeout_ms: 5000
+    restart_failed_speech_service: true
+
+renderer:
+  adapter: "anime25d"
+  target_fps: 60
+  canvas:
+    width: 2048
+    height: 2048
+    device_pixel_ratio_cap: 1.0
+  background:
+    mode: "transparent"
+    rgba: [0, 0, 0, 0]
+  alpha_mode: "straight"
+  premultiply_alpha_for_output: false
+  antialias: true
+  texture_filter: "linear"
+  max_texture_size: 4096
+  hide_ui_in_overlay: true
+  pause_when_overlay_hidden: false
+  frame_timing_overlay: false
+  safe_mode:
+    enabled: true
+    disable_optional_fx_below_fps: 50
+    disable_blur_below_fps: 45
+
+output:
+  primary_adapter: "browser_source"
+  browser_source:
+    url: "http://127.0.0.1:8765/overlay"
+    recommended_width: 2048
+    recommended_height: 2048
+    recommended_fps: 60
+    shutdown_source_when_not_visible: false
+    refresh_browser_when_scene_becomes_active: false
+  spout2:
+    enabled: false
+    sender_name: "live2D-Q"
+    alpha_mode: "premultiplied"
+
+microphone:
+  device_id: "default"
+  capture_sample_rate_hz: 48000
+  capture_channels: 1
+  frame_ms: 20
+  echo_cancellation: false
+  noise_suppression: false
+  auto_gain_control: false
+  monitor_enabled: false
+  gain_db: 0.0
+  high_pass_hz: 70
+  noise_gate:
+    enabled: true
+    open_dbfs: -44.0
+    close_dbfs: -50.0
+    hold_ms: 90
+  limiter:
+    enabled: true
+    ceiling_dbfs: -1.0
+
+vad:
+  adapter: "energy"
+  speech_threshold: 0.55
+  min_speech_ms: 80
+  min_silence_ms: 180
+  pre_roll_ms: 160
+  post_roll_ms: 240
+
+lip_sync:
+  primary_engine: "wlipsync"
+  fallback_engine: "amplitude"
+  update_interval_ms: 20
+  profile_path: "assets/profiles/voice-profile.json"
+  visemes: [REST, MBP, A, I, U, E, O, FV]
+  normalization:
+    softmax_temperature: 0.72
+    minimum_active_weight: 0.035
+    preserve_rest_weight: true
+  mouth_open:
+    source: "rms_plus_vad"
+    threshold_dbfs: -46.0
+    maximum_dbfs: -12.0
+    exponent: 0.82
+  smoothing:
+    open_attack_ms: 28
+    open_release_ms: 92
+    viseme_attack_ms: 42
+    viseme_release_ms: 76
+    rest_hold_ms: 48
+    mbp_minimum_hold_ms: 55
+  coarticulation:
+    enabled: true
+    lookahead_ms: 0
+    previous_viseme_mix: 0.22
+    next_viseme_mix: 0.0
+  calibration:
+    required_before_first_use: true
+    recording_per_vowel_ms: 1800
+    repetitions: 3
+    reject_clipped_samples: true
+
+prosody:
+  enabled: true
+  update_interval_ms: 20
+  features:
+    rms: true
+    peak: true
+    pitch_f0: true
+    spectral_centroid: true
+    speech_rate_proxy: true
+    onset_strength: true
+  pitch:
+    min_hz: 70
+    max_hz: 420
+    smoothing_ms: 120
+  mappings:
+    rms_to_breath: 0.22
+    onset_to_head_nod: 0.16
+    pitch_to_head_y: 0.08
+    speech_rate_to_physics_gain: 0.18
+    pause_to_idle_reset: 0.5
+  clamp_per_second:
+    head_x: 1.2
+    head_y: 1.2
+    head_z: 1.0
+    body_y: 0.8
+
+speech_service:
+  enabled: true
+  process_mode: "separate_python_process"
+  bind_host: "127.0.0.1"
+  port: 8766
+  python_environment: ".venv-speech"
+  adapter: "sensevoice"
+  model:
+    id: "SenseVoiceSmall"
+    source: "funasr"
+    device: "cuda:0"
+    precision: "fp16"
+    trust_remote_code: false
+    local_files_only_after_download: true
+  input:
+    sample_rate_hz: 16000
+    channels: 1
+    format: "pcm_s16le"
+    resampler: "soxr"
+  asr:
+    enabled: true
+    language: "auto"
+    partial_results: true
+    emit_interval_ms: 240
+    endpoint_silence_ms: 520
+    max_segment_ms: 18000
+    punctuation: true
+    inverse_text_normalization: true
+  emotion:
+    enabled: true
+    inference_interval_ms: 320
+    window_ms: 1600
+    hop_ms: 320
+    labels: [neutral, happy, sad, angry, surprised, fearful, disgusted, unknown]
+  audio_events:
+    enabled: true
+    labels: [laughter, applause, cough, sneeze, music, noise]
+  queue:
+    max_audio_ms: 3000
+    drop_policy: "drop_oldest_non_speech"
+  timeouts:
+    startup_ms: 60000
+    inference_ms: 2500
+    reconnect_backoff_ms: [250, 500, 1000, 2000, 5000]
+
+emotion_state_machine:
+  enabled: true
+  default_state: "neutral"
+  confidence_enter: 0.67
+  confidence_exit: 0.48
+  required_consecutive_windows: 2
+  minimum_hold_ms: 900
+  neutral_return_delay_ms: 1100
+  transition_in_ms: 280
+  transition_out_ms: 620
+  manual_override_ttl_ms: 0
+  unknown_policy: "keep_previous_then_neutral"
+  conflict_policy: "highest_smoothed_confidence"
+  smoothing:
+    method: "ema"
+    alpha: 0.28
+  label_mapping:
+    neutral: neutral
+    happy: happy
+    sad: sad
+    angry: angry_low
+    surprised: surprised
+    fearful: sad
+    disgusted: angry_low
+    unknown: neutral
+
+parameter_bus:
+  schema_version: "1.0"
+  transport: "websocket"
+  broadcast_rate_hz: 60
+  snapshots_rate_hz: 2
+  stale_source_timeout_ms: 1200
+  priorities:
+    safety: 100
+    manual_override: 90
+    one_shot_action: 70
+    emotion: 50
+    lip_sync: 45
+    prosody: 35
+    idle: 10
+  conflict_resolution: "highest_priority_then_latest"
+  interpolation:
+    default: "critically_damped_spring"
+    fixed_timestep_hz: 120
+    max_delta_ms: 50
+
+subtitles:
+  enabled: true
+  visible_in_control: true
+  visible_in_overlay: false
+  max_lines: 2
+  max_characters_per_line: 30
+  partial_opacity: 0.72
+  final_hold_ms: 3800
+  redact_logs: true
+  save_transcript: false
+
+idle_animation:
+  enabled: true
+  profile: "calm"
+  auto_blink: true
+  random_gaze: true
+  breath: true
+  body_sway: true
+  idle_after_silence_ms: 850
+  deep_idle_after_silence_ms: 18000
+
+physics:
+  enabled: true
+  simulation_hz: 120
+  max_substeps: 4
+  global_damping: 0.76
+  global_gravity: [0.0, 1.0]
+  hair_gain: 1.0
+  cape_gain: 0.85
+  sleeve_gain: 0.75
+  impulse_limit: 1.0
+  reset_on_visibility_change: true
+
+webui:
+  theme: "system"
+  language: "zh-CN"
+  compact_mode: false
+  developer_mode: false
+  show_advanced_controls: true
+  persist_settings: true
+  confirmation_required_for:
+    - "reset_all_settings"
+    - "delete_voice_profile"
+    - "enable_audio_recording"
+    - "allow_remote_connections"
+  hotkeys_enabled: true
+  midi_enabled: false
+  stream_deck_enabled: false
+
+privacy:
+  record_audio: false
+  retain_raw_audio_in_memory_ms: 4000
+  save_transcripts: false
+  redact_transcript_in_logs: true
+  crash_reports: false
+  network_access:
+    allow_model_downloads: true
+    allow_update_check: false
+    allow_telemetry: false
+
+logging:
+  level: "info"
+  console: true
+  file: true
+  rotate_mb: 20
+  keep_files: 5
+  include_performance_metrics: true
+  include_transcript_text: false
+  include_audio_samples: false

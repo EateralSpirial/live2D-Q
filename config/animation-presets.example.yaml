@@ -1,0 +1,430 @@
+schema_version: "1.0"
+character_id: "live2dq_teacher_v1"
+
+# 所有数值均为归一化目标值，通常落在 [-1, 1] 或 [0, 1]。
+# 实际运行时必须经过参数 schema、范围裁剪、优先级合成和平滑器。
+# 本文件只定义角色状态，不直接绑定具体第三方引擎内部字段。
+
+defaults:
+  transition_in_ms: 280
+  transition_out_ms: 520
+  minimum_hold_ms: 900
+  interruptible: true
+  priority: 20
+  additive: false
+
+parameter_ranges:
+  eye_open_l: [0.0, 1.25]
+  eye_open_r: [0.0, 1.25]
+  eye_smile: [0.0, 1.0]
+  pupil_x: [-1.0, 1.0]
+  pupil_y: [-1.0, 1.0]
+  brow_y_l: [-1.0, 1.0]
+  brow_y_r: [-1.0, 1.0]
+  brow_angle_l: [-1.0, 1.0]
+  brow_angle_r: [-1.0, 1.0]
+  mouth_smile: [-1.0, 1.0]
+  mouth_tension: [0.0, 1.0]
+  head_x: [-1.0, 1.0]
+  head_y: [-1.0, 1.0]
+  head_z: [-1.0, 1.0]
+  body_x: [-1.0, 1.0]
+  body_y: [-1.0, 1.0]
+  body_z: [-1.0, 1.0]
+  breath: [0.0, 1.0]
+  hair_physics_gain: [0.0, 2.0]
+  cape_physics_gain: [0.0, 2.0]
+  sleeve_physics_gain: [0.0, 2.0]
+  star_fx_gain: [0.0, 2.0]
+  core_glow: [0.0, 1.0]
+
+presets:
+  neutral:
+    display_name: "默认 / Neutral"
+    emotion_labels: [neutral, unknown]
+    transition_in_ms: 320
+    transition_out_ms: 500
+    minimum_hold_ms: 700
+    parameters:
+      eye_open_l: 1.0
+      eye_open_r: 1.0
+      eye_smile: 0.0
+      brow_y_l: 0.0
+      brow_y_r: 0.0
+      brow_angle_l: 0.0
+      brow_angle_r: 0.0
+      mouth_smile: 0.08
+      mouth_tension: 0.08
+      head_y: 0.0
+      body_y: 0.0
+      hair_physics_gain: 1.0
+      cape_physics_gain: 0.85
+      sleeve_physics_gain: 0.75
+      star_fx_gain: 0.25
+      core_glow: 0.18
+    idle_profile: calm
+
+  happy:
+    display_name: "愉快 / Happy"
+    emotion_labels: [happy]
+    transition_in_ms: 220
+    transition_out_ms: 580
+    minimum_hold_ms: 1100
+    parameters:
+      eye_open_l: 0.92
+      eye_open_r: 0.92
+      eye_smile: 0.58
+      brow_y_l: 0.18
+      brow_y_r: 0.18
+      brow_angle_l: 0.08
+      brow_angle_r: -0.08
+      mouth_smile: 0.68
+      mouth_tension: 0.05
+      head_y: 0.08
+      body_y: 0.05
+      hair_physics_gain: 1.12
+      cape_physics_gain: 1.08
+      sleeve_physics_gain: 1.0
+      star_fx_gain: 0.72
+      core_glow: 0.48
+    idle_profile: lively
+
+  excited:
+    display_name: "兴奋 / Excited"
+    emotion_labels: [excited]
+    transition_in_ms: 150
+    transition_out_ms: 720
+    minimum_hold_ms: 900
+    parameters:
+      eye_open_l: 1.18
+      eye_open_r: 1.18
+      eye_smile: 0.18
+      brow_y_l: 0.48
+      brow_y_r: 0.48
+      brow_angle_l: 0.12
+      brow_angle_r: -0.12
+      mouth_smile: 0.62
+      mouth_tension: 0.1
+      head_y: 0.16
+      body_y: 0.12
+      hair_physics_gain: 1.48
+      cape_physics_gain: 1.55
+      sleeve_physics_gain: 1.38
+      star_fx_gain: 1.35
+      core_glow: 0.9
+    idle_profile: energetic
+    one_shot_action: small_bounce
+
+  thoughtful:
+    display_name: "思考 / Thoughtful"
+    emotion_labels: [thoughtful]
+    transition_in_ms: 420
+    transition_out_ms: 620
+    minimum_hold_ms: 1500
+    parameters:
+      eye_open_l: 0.74
+      eye_open_r: 0.78
+      eye_smile: 0.0
+      pupil_x: 0.18
+      pupil_y: -0.1
+      brow_y_l: -0.05
+      brow_y_r: 0.02
+      brow_angle_l: -0.12
+      brow_angle_r: 0.06
+      mouth_smile: -0.04
+      mouth_tension: 0.2
+      head_x: 0.1
+      head_y: -0.08
+      head_z: 0.08
+      body_z: 0.04
+      hair_physics_gain: 0.82
+      cape_physics_gain: 0.68
+      sleeve_physics_gain: 0.65
+      star_fx_gain: 0.28
+      core_glow: 0.28
+    idle_profile: contemplative
+
+  serious:
+    display_name: "认真 / Serious"
+    emotion_labels: [serious]
+    transition_in_ms: 250
+    transition_out_ms: 520
+    minimum_hold_ms: 1200
+    parameters:
+      eye_open_l: 0.95
+      eye_open_r: 0.95
+      eye_smile: 0.0
+      brow_y_l: -0.12
+      brow_y_r: -0.12
+      brow_angle_l: -0.34
+      brow_angle_r: 0.34
+      mouth_smile: -0.12
+      mouth_tension: 0.48
+      head_y: -0.04
+      body_y: -0.02
+      hair_physics_gain: 0.75
+      cape_physics_gain: 0.62
+      sleeve_physics_gain: 0.58
+      star_fx_gain: 0.2
+      core_glow: 0.38
+    idle_profile: focused
+
+  angry_low:
+    display_name: "克制不满 / Controlled Anger"
+    emotion_labels: [angry, disgusted]
+    transition_in_ms: 180
+    transition_out_ms: 780
+    minimum_hold_ms: 1300
+    parameters:
+      eye_open_l: 0.86
+      eye_open_r: 0.86
+      eye_smile: 0.0
+      brow_y_l: -0.24
+      brow_y_r: -0.24
+      brow_angle_l: -0.62
+      brow_angle_r: 0.62
+      mouth_smile: -0.34
+      mouth_tension: 0.78
+      head_y: -0.1
+      body_y: -0.08
+      hair_physics_gain: 0.7
+      cape_physics_gain: 0.55
+      sleeve_physics_gain: 0.5
+      star_fx_gain: 0.3
+      core_glow: 0.55
+    idle_profile: restrained
+
+  sad:
+    display_name: "低落 / Sad"
+    emotion_labels: [sad, fearful]
+    transition_in_ms: 520
+    transition_out_ms: 920
+    minimum_hold_ms: 1600
+    parameters:
+      eye_open_l: 0.68
+      eye_open_r: 0.68
+      eye_smile: 0.0
+      pupil_y: 0.12
+      brow_y_l: -0.12
+      brow_y_r: -0.12
+      brow_angle_l: 0.3
+      brow_angle_r: -0.3
+      mouth_smile: -0.42
+      mouth_tension: 0.26
+      head_y: -0.2
+      body_y: -0.14
+      hair_physics_gain: 0.62
+      cape_physics_gain: 0.48
+      sleeve_physics_gain: 0.45
+      star_fx_gain: 0.08
+      core_glow: 0.1
+    idle_profile: subdued
+
+  surprised:
+    display_name: "惊讶 / Surprised"
+    emotion_labels: [surprised]
+    transition_in_ms: 90
+    transition_out_ms: 520
+    minimum_hold_ms: 520
+    parameters:
+      eye_open_l: 1.25
+      eye_open_r: 1.25
+      eye_smile: 0.0
+      brow_y_l: 0.68
+      brow_y_r: 0.68
+      brow_angle_l: 0.1
+      brow_angle_r: -0.1
+      mouth_smile: 0.0
+      mouth_tension: 0.08
+      head_y: 0.14
+      body_y: 0.1
+      hair_physics_gain: 1.35
+      cape_physics_gain: 1.28
+      sleeve_physics_gain: 1.12
+      star_fx_gain: 0.85
+      core_glow: 0.72
+    idle_profile: alert
+    one_shot_action: recoil_small
+
+  tired:
+    display_name: "疲惫 / Tired"
+    emotion_labels: [tired]
+    transition_in_ms: 650
+    transition_out_ms: 900
+    minimum_hold_ms: 1800
+    parameters:
+      eye_open_l: 0.48
+      eye_open_r: 0.5
+      eye_smile: 0.0
+      pupil_y: 0.08
+      brow_y_l: -0.18
+      brow_y_r: -0.18
+      brow_angle_l: 0.1
+      brow_angle_r: -0.1
+      mouth_smile: -0.18
+      mouth_tension: 0.14
+      head_y: -0.16
+      head_z: -0.04
+      body_y: -0.12
+      hair_physics_gain: 0.58
+      cape_physics_gain: 0.42
+      sleeve_physics_gain: 0.4
+      star_fx_gain: 0.05
+      core_glow: 0.08
+    idle_profile: sleepy
+
+  confused:
+    display_name: "困惑 / Confused"
+    emotion_labels: [confused]
+    transition_in_ms: 260
+    transition_out_ms: 600
+    minimum_hold_ms: 1050
+    parameters:
+      eye_open_l: 0.9
+      eye_open_r: 1.02
+      eye_smile: 0.0
+      pupil_x: -0.1
+      brow_y_l: 0.24
+      brow_y_r: -0.08
+      brow_angle_l: 0.28
+      brow_angle_r: 0.18
+      mouth_smile: -0.08
+      mouth_tension: 0.28
+      head_x: -0.08
+      head_z: -0.12
+      body_z: -0.04
+      hair_physics_gain: 0.9
+      cape_physics_gain: 0.74
+      sleeve_physics_gain: 0.7
+      star_fx_gain: 0.22
+      core_glow: 0.24
+    idle_profile: questioning
+
+  awakening:
+    display_name: "灵感觉醒 / Awakening"
+    emotion_labels: [awakening]
+    transition_in_ms: 360
+    transition_out_ms: 1100
+    minimum_hold_ms: 2200
+    priority: 60
+    parameters:
+      eye_open_l: 1.12
+      eye_open_r: 1.12
+      eye_smile: 0.12
+      brow_y_l: 0.28
+      brow_y_r: 0.28
+      brow_angle_l: 0.05
+      brow_angle_r: -0.05
+      mouth_smile: 0.3
+      mouth_tension: 0.06
+      head_y: 0.12
+      body_y: 0.08
+      hair_physics_gain: 1.22
+      cape_physics_gain: 1.26
+      sleeve_physics_gain: 1.12
+      star_fx_gain: 2.0
+      core_glow: 1.0
+    idle_profile: transcendent
+    one_shot_action: star_bloom
+
+idle_profiles:
+  calm:
+    blink_interval_ms: [2800, 6200]
+    gaze_interval_ms: [1800, 5200]
+    breath_hz: 0.18
+    breath_amplitude: 0.18
+    sway_hz: 0.055
+    sway_amplitude: 0.06
+  lively:
+    blink_interval_ms: [2400, 5200]
+    gaze_interval_ms: [1400, 3600]
+    breath_hz: 0.22
+    breath_amplitude: 0.24
+    sway_hz: 0.075
+    sway_amplitude: 0.1
+  energetic:
+    blink_interval_ms: [1900, 4100]
+    gaze_interval_ms: [900, 2600]
+    breath_hz: 0.27
+    breath_amplitude: 0.3
+    sway_hz: 0.11
+    sway_amplitude: 0.15
+  contemplative:
+    blink_interval_ms: [3400, 7200]
+    gaze_interval_ms: [2800, 7000]
+    breath_hz: 0.15
+    breath_amplitude: 0.13
+    sway_hz: 0.04
+    sway_amplitude: 0.04
+  focused:
+    blink_interval_ms: [3200, 6800]
+    gaze_interval_ms: [2600, 6200]
+    breath_hz: 0.16
+    breath_amplitude: 0.12
+    sway_hz: 0.035
+    sway_amplitude: 0.03
+  restrained:
+    blink_interval_ms: [3000, 6200]
+    gaze_interval_ms: [2300, 5200]
+    breath_hz: 0.2
+    breath_amplitude: 0.11
+    sway_hz: 0.03
+    sway_amplitude: 0.025
+  subdued:
+    blink_interval_ms: [3800, 7600]
+    gaze_interval_ms: [3000, 7600]
+    breath_hz: 0.13
+    breath_amplitude: 0.1
+    sway_hz: 0.025
+    sway_amplitude: 0.025
+  alert:
+    blink_interval_ms: [1800, 3800]
+    gaze_interval_ms: [900, 2200]
+    breath_hz: 0.25
+    breath_amplitude: 0.22
+    sway_hz: 0.08
+    sway_amplitude: 0.1
+  sleepy:
+    blink_interval_ms: [1600, 3600]
+    gaze_interval_ms: [4000, 9000]
+    breath_hz: 0.12
+    breath_amplitude: 0.12
+    sway_hz: 0.018
+    sway_amplitude: 0.03
+  questioning:
+    blink_interval_ms: [2600, 5400]
+    gaze_interval_ms: [1200, 3500]
+    breath_hz: 0.17
+    breath_amplitude: 0.16
+    sway_hz: 0.05
+    sway_amplitude: 0.065
+  transcendent:
+    blink_interval_ms: [3000, 6500]
+    gaze_interval_ms: [1800, 4200]
+    breath_hz: 0.19
+    breath_amplitude: 0.2
+    sway_hz: 0.065
+    sway_amplitude: 0.08
+
+one_shot_actions:
+  small_bounce:
+    duration_ms: 420
+    curve: ease_out_back
+    tracks:
+      body_y: [0.0, 0.18, -0.04, 0.0]
+      head_y: [0.0, 0.1, -0.02, 0.0]
+      sleeve_physics_impulse: [0.0, 0.8, 0.0]
+  recoil_small:
+    duration_ms: 360
+    curve: ease_out_cubic
+    tracks:
+      body_y: [0.0, 0.14, 0.0]
+      head_y: [0.0, 0.2, 0.0]
+      cape_physics_impulse: [0.0, 0.7, 0.0]
+  star_bloom:
+    duration_ms: 1800
+    curve: ease_in_out_sine
+    tracks:
+      star_fx_gain: [0.4, 2.0, 1.25]
+      core_glow: [0.35, 1.0, 0.72]
+      hair_physics_impulse: [0.0, 0.4, 0.0]
