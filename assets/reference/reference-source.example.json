@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "sourcePath": "assets/reference/local/character_reference_source.png",
+  "previewPath": "assets/reference/character_reference_preview.webp",
+  "width": 1254,
+  "height": 1254,
+  "format": "PNG",
+  "colorMode": "RGBA",
+  "alphaExtrema": [255, 255],
+  "sha256": "a8699cd228353110c0ddc16b0d46721143400d6d5008273a24f03c340eacfb4b",
+  "notes": "粉色背景与角色已合并；Phase 1 需先移除背景并拆层。"
+}
