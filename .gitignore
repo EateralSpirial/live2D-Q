@@ -1,0 +1,70 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+config/runtime.local.yaml
+config/*.local.json
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+.envs/
+
+# Node
+node_modules/
+dist/
+build/
+coverage/
+.playwright/
+
+# Models and caches
+models/
+model-cache/
+.cache/
+.huggingface/
+.modelscope/
+*.safetensors
+*.ckpt
+*.pth
+*.pt
+*.onnx
+*.gguf
+*.engine
+
+# Runtime data
+logs/
+recordings/
+diagnostics/
+tmp/
+temp/
+workspace/
+output/
+outputs/
+*.log
+
+# User profiles and calibration recordings
+assets/profiles/local/
+assets/calibration/raw/
+
+# Generated previews that can be rebuilt
+assets/previews/_build/
+
+# Third-party working copies before pinning
+third_party/_work/
+
+# Local full-resolution character references
+assets/reference/local/
