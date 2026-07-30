@@ -12,7 +12,9 @@
 
 > 当前仓库首先提供**完整的实现规格、资产清单、架构约束和验收标准**。运行时代码由本地 Codex 按阶段实现。不要把当前文档版仓库误认为已经可直接直播的成品。
 
-![角色主参考图](assets/reference/character_reference.png)
+![角色主参考图预览](assets/reference/character_reference_preview.webp)
+
+> 克隆后需把原始 1254×1254 PNG 放到 `assets/reference/local/character_reference_source.png`，并运行 `python scripts/check_reference.py`。仓库内缩略图只供文档预览。
 
 ## 已选定的主路线
 
@@ -86,9 +88,22 @@ WebUI 控制器
 - [`config/animation-presets.example.yaml`](config/animation-presets.example.yaml)：表情/动作预设样例；
 - [`config/runtime.example.yaml`](config/runtime.example.yaml)：运行时配置样例。
 
+## 克隆后的主参考图准备
+
+完整主图没有重复提交进仓库。把你本地保存的原图复制到约定位置：
+
+```powershell
+New-Item -ItemType Directory -Force assets\reference\local | Out-Null
+Copy-Item "你保存的\Q版live2D老师形象.png" `
+  "assets\reference\local\character_reference_source.png"
+python scripts/check_reference.py
+```
+
+校验通过后再进入 Phase 1。具体元数据和 SHA-256 见 [`assets/reference/README.md`](assets/reference/README.md)。
+
 ## 建议的本地 Codex 启动方式
 
-克隆后先让 Codex只执行一个阶段，避免一次性改动过大：
+克隆后先让 Codex 只执行一个阶段，避免一次性改动过大：
 
 ```text
 请先阅读 AGENTS.md、docs/01_IMPLEMENTATION_ROADMAP.md 和 docs/07_TEST_AND_ACCEPTANCE.md。
